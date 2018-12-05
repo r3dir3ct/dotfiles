@@ -35,7 +35,7 @@ if [ ! -d $HOME/.tmux/plugins/tpm ]; then
 fi
 # install oh-my-zsh
 if [ ! -d $HOME/.oh-my-zsh ]; then
-    git clone https://github.com/robbyrussell/oh-my-zsh $HOME
+    git clone https://github.com/robbyrussell/oh-my-zsh $HOME/.oh-my-zsh
     TEST_CURRENT_SHELL=$(expr "$SHELL" : '.*/\(.*\)')
     if [ "$TEST_CURRENT_SHELL" != "zsh" ]; then
         # If this platform provides a "chsh" command (not Cygwin), do it, man!
