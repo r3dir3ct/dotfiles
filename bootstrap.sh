@@ -5,6 +5,9 @@ if [ ! -d $DOTFILES_DIR ]; then
     mkdir -p $HOME/.local
     cd $HOME/.local
     git clone git@github.com:r3dir3ct/dotfiles.git $DOTFILES_DIR
+else
+    cd $DOTFILES_DIR
+    git pull
 fi
 
 # rsync files
