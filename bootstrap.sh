@@ -9,6 +9,8 @@ if [ ! -d $DOTFILES_DIR ]; then
     mkdir -p $HOME/.local
     cd $HOME/.local
     git clone https://github.com/r3dir3ct/dotfiles.git $DOTFILES_DIR
+elif [ "$1" == "--test" ]; then
+    echo "Testing Mode, no pull"
 else
     cd $DOTFILES_DIR
     git pull
@@ -16,26 +18,26 @@ fi
 
 # rsync MacOS Bootstrap
 function MacOSBootstrap(){
-    rsync -avh --no-perms $SHARE_SUBDIR $HOME
-    rsync -avh --no-perms $MACOS_SUBDIR $HOME
+    rsync -acvh --no-perms $SHARE_SUBDIR/ $HOME
+    rsync -acvh --no-perms $MACOS_SUBDIR/ $HOME
 }
 
 # rsync Linux Dryrun
 function MacOSDryRun(){
-    rsync --dry-run -avh --no-perms $SHARE_SUBDIR $HOME
-    rsync --dry-run -avh --no-perms $MACOS_SUBDIR $HOME
+    rsync --dry-run -acvh --no-perms $SHARE_SUBDIR/ $HOME
+    rsync --dry-run -acvh --no-perms $MACOS_SUBDIR/ $HOME
 }
 
 # rsync Linux Bootstrap
 function LinuxBootstrap(){
-    rsync -avh --no-perms $SHARE_SUBDIR $HOME
-    rsync -avh --no-perms $LINUX_SUBDIR $HOME
+    rsync -acvh --no-perms $SHARE_SUBDIR/ $HOME
+    rsync -acvh --no-perms $LINUX_SUBDIR/ $HOME
 }
 
 # rsync Linux Dryrun
 function LinuxDryRun(){
-    rsync --dry-run -avh --no-perms $SHARE_SUBDIR $HOME
-    rsync --dry-run -avh --no-perms $LINUX_SUBDIR $HOME
+    rsync --dry-run -acvh --no-perms $SHARE_SUBDIR/ $HOME
+    rsync --dry-run -acvh --no-perms $LINUX_SUBDIR/ $HOME
 }
 
 if [ "$OS_TYPE" == "Darwin" ]; then
