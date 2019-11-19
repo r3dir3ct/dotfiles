@@ -1,5 +1,9 @@
 #! /usr/bin/env bash
-DOTFILES_DIR=$HOME/.local/dotfiles/
+DOTFILES_DIR=$HOME/.local/dotfiles
+SHARE_SUBDIR=$DOTFILES_DIR/share
+MACOS_SUBDIR=$DOTFILES_DIR/macos
+LINUX_SUBDIR=$DOTFILES_DIR/linux
+OS_TYPE=$(uname)
 
 if [ ! -d $DOTFILES_DIR ]; then
     mkdir -p $HOME/.local
@@ -10,41 +14,49 @@ else
     git pull
 fi
 
-# rsync files
-function doIt(){
-    rsync --exclude ".git/" \
-          --exclude ".DS_Store" \
-          --exclude ".osx" \
-          --exclude "bootstrap.sh" \
-          --exclude "zsh_init.sh" \
-          --exclude "README.md" \
-          --exclude "LICENSE" \
-          -avh --no-perms $DOTFILES_DIR $HOME;
+# rsync MacOS Bootstrap
+function MacOSBootstrap(){
+    rsync -avh --no-perms $SHARE_SUBDIR $HOME
+    rsync -avh --no-perms $MACOS_SUBDIR $HOME
 }
-# rsync dryrun
-function dryRun(){
-    rsync --dry-run \
-          --exclude ".git/" \
-          --exclude ".DS_Store" \
-          --exclude ".osx" \
-          --exclude "bootstrap.sh" \
-          --exclude "zsh_init.sh" \
-          --exclude "README.md" \
-          --exclude "LICENSE" \
-          -avh --no-perms $DOTFILES_DIR $HOME;
+
+# rsync Linux Dryrun
+function MacOSDryRun(){
+    rsync --dry-run -avh --no-perms $SHARE_SUBDIR $HOME
+    rsync --dry-run -avh --no-perms $MACOS_SUBDIR $HOME
 }
-if [ "$1" == "--force" -o "$1" == "-f" ]; then
-	doIt;
+
+# rsync Linux Bootstrap
+function LinuxBootstrap(){
+    rsync -avh --no-perms $SHARE_SUBDIR $HOME
+    rsync -avh --no-perms $LINUX_SUBDIR $HOME
+}
+
+# rsync Linux Dryrun
+function LinuxDryRun(){
+    rsync --dry-run -avh --no-perms $SHARE_SUBDIR $HOME
+    rsync --dry-run -avh --no-perms $LINUX_SUBDIR $HOME
+}
+
+if [ "$OS_TYPE" == "Darwin" ]; then
+    echo "Detected OS is MacOS, and these files will be overwrite, please check!"
+    MacOSDryRun
+    read -p "Are you sure to overwrite? (y/n) " -n 1
+    echo ""
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        MacOSBootstrap
+    fi
+elif [ "$OS_TYPE" == "Linux" ]; then
+    echo "Detected OS is Linux, and these files will be overwrite, please check!"
+    LinuxDryRun
+    read -p "Are you sure to overwrite? (y/n) " -n 1
+    echo ""
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        LinuxBootstrap
+    fi
 else
-    echo "These files will be overwrite, please check!"
-    dryRun;
-    read -p "Are you sure to overwrite? (y/n) " -n 1;
-	echo "";
-	if [[ $REPLY =~ ^[Yy]$ ]]; then
-		doIt;
-	fi;
-fi;
-unset doIt;
+    echo "Unknown OS, please check!"
+fi
 
 # install tpm and plugins
 if [ ! -d $HOME/.tmux/plugins/tpm ]; then
@@ -69,7 +81,7 @@ fi
 
 # init zsh
 if [ ! -f $HOME/.zshrc ]; then
-    echo "source ${DOTFILES_DIR}zsh_init.sh" > $HOME/.zshrc
+    echo "source ${DOTFILES_DIR}/zsh_init.sh" > $HOME/.zshrc
 fi
 
 
