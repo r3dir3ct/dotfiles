@@ -1,0 +1,6 @@
+[submodule "share/.oh-my-zsh"]
+	path = share/.oh-my-zsh
+	url = https://github.com/ohmyzsh/ohmyzsh.git
+[submodule "share/.tmux/plugins/tpm"]
+	path = share/.tmux/plugins/tpm
+	url = https://github.com/tmux-plugins/tpm
