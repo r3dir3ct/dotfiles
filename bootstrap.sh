@@ -60,6 +60,11 @@ else
     echo "Unknown OS, please check!"
 fi
 
+# add to .zshrc
+if [ ! -f $HOME/.zshrc ]; then
+    echo "source ${DOTFILES}/.zshrc_common >> $HOME/.zshrc"
+fi
+
 # try to change shell to zsh
 TEST_CURRENT_SHELL=$(expr "$SHELL" : '.*/\(.*\)')
 if [ "$TEST_CURRENT_SHELL" != "zsh" ]; then
