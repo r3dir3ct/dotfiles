@@ -62,7 +62,7 @@ fi
 
 # add to .zshrc
 if [ ! -f $HOME/.zshrc ]; then
-    echo "source $DOTFILES/.zshrc_common" >> $HOME/.zshrc
+    echo "source $DOTFILES_DIR/.zshrc_common" >> $HOME/.zshrc
 fi
 
 # try to change shell to zsh
