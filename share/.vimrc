@@ -18,6 +18,14 @@ Plug 'scrooloose/syntastic'
 Plug 'tpope/vim-surround'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+"Plug 'valloric/youcompleteme'
 call plug#end()
 
-map <C-n> :NERDTreeToggle<CR>
+" Normal mode no-recursive map Ctrl-N to open NERDTree
+nnoremap <C-n> :NERDTree<CR>
+" Start NERDTree. If a file is specified, move the cursor to its window.
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
+" Exit Vim if NERDTree is the only window left.
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
+    \ quit | endif
