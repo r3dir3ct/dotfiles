@@ -8,11 +8,12 @@ OS_TYPE=$(uname)
 if [ ! -d $DOTFILES_DIR ]; then
     mkdir -p $HOME/.local
     cd $HOME/.local
-    git clone https://github.com/r3dir3ct/dotfiles.git $DOTFILES_DIR
+    git clone --recurse-submodules https://github.com/r3dir3ct/dotfiles.git $DOTFILES_DIR
 elif [ "$1" == "--test" ]; then
     echo "Testing Mode, no pull"
 else
     cd $DOTFILES_DIR
+    git submodule update --init
     git pull
 fi
 
